@@ -27,7 +27,7 @@ module Data.Unlifted
   ) where
 
 import Data.Kind (Type)
-import GHC.Exts (TYPE,State#,Levity(Unlifted),RuntimeRep(..),Int#,ByteArray#,MutableByteArray#)
+import GHC.Exts (TYPE,State#,Levity(Unlifted),RuntimeRep(..),Int#,ByteArray#,MutableByteArray#,Word#,Int32#)
 
 -- | Variant of @ST@ where the argument type does not have to be lifted.
 -- This does not have a monad instance and is difficult to use.
@@ -36,10 +36,9 @@ newtype ST# :: forall (r :: RuntimeRep). Type -> TYPE r -> Type where
     { unST# :: State# s -> (# State# s, a #)
     } -> ST# s a
 
--- | Unboxed variant of @Bool@. This might be changed to use @Int8Rep@ in the
--- future.
-newtype Bool# :: TYPE 'IntRep where
-  Bool# :: Int# -> Bool#
+-- | Unboxed variant of @Bool@.
+newtype Bool# :: TYPE 'WordRep where
+  Bool# :: Word# -> Bool#
 
 -- | Unboxed variant of @Maybe@.
 newtype Maybe# :: forall (r :: RuntimeRep). TYPE r -> TYPE ('SumRep '[ 'TupleRep '[], r ]) where
@@ -52,10 +51,10 @@ newtype Either# :: forall (ra :: RuntimeRep) (rb :: RuntimeRep). TYPE ra -> TYPE
 {-# complete True#, False# #-}
 
 pattern True# :: Bool#
-pattern True# = Bool# 1#
+pattern True# = Bool# 1##
 
 pattern False# :: Bool#
-pattern False# = Bool# 0#
+pattern False# = Bool# 0##
 
 -- | Mutable variant of 'PrimArray#'.
 newtype MutablePrimArray# :: forall (r :: RuntimeRep). Type -> TYPE r -> TYPE ('BoxedRep 'Unlifted) where
@@ -72,3 +71,12 @@ newtype PrimArray# :: forall (r :: RuntimeRep). TYPE r -> TYPE ('BoxedRep 'Unlif
 -- | Unlifted variant of @ShortText@.
 newtype ShortText# :: TYPE ('BoxedRep 'Unlifted) where
   ShortText# :: ByteArray# -> ShortText#
+
+-- | Unboxed variant of @Text@. This includes a somewhat dubious restriction
+-- that on the offset and length that prevents byte arrays larger than 2GiB
+-- from being used as the backing store.
+--
+-- This decision makes the type work well in the vext library, and it makes
+-- the in-memory format close to what Apache Arrow uses. 
+newtype Text# :: TYPE ('TupleRep ['BoxedRep 'Unlifted, 'Int32Rep, 'Int32Rep]) where
+  Text# :: (# ByteArray#, Int32#, Int32# #) -> Text#
