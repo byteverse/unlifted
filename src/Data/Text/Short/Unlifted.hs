@@ -1,18 +1,17 @@
-{-# language GADTSyntax #-}
-{-# language KindSignatures #-}
-{-# language MagicHash #-}
-{-# language UnliftedNewtypes #-}
+{-# LANGUAGE GADTSyntax #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE MagicHash #-}
+{-# LANGUAGE UnliftedNewtypes #-}
 
 module Data.Text.Short.Unlifted
-  ( ShortText#(..)
+  ( ShortText# (..)
   , lift
   , unlift
   ) where
 
-
-import Data.Unlifted (ShortText#(ShortText#))
-import Data.Text.Short (ShortText)
 import Data.ByteString.Short.Internal as TS
+import Data.Text.Short (ShortText)
+import Data.Unlifted (ShortText# (ShortText#))
 
 import qualified Data.Text.Short as TS
 import qualified Data.Text.Short.Unsafe as TS
