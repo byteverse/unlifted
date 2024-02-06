@@ -1,9 +1,15 @@
 # Revision history for unlifted
 
+## 0.2.1.1 -- 2024-02-06
+
+* Update package metadata.
+
+## 0.2.1.0 -- 2023-08-31
+
 ## 0.2.0.0 -- 2023-08-22
 
 * Add `Text#`. Change `Bool#` to use `Word#` instead of `Int#`.
 
-## 0.1.0.0 -- YYYY-mm-dd
+## 0.1.0.0 -- 2023-05-31
 
-* First version. Released on an unsuspecting world.
+* First version.
