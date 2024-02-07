@@ -16,6 +16,7 @@ module Data.Unlifted
 
     -- * Text
   , ShortText# (..)
+  , Text# (..)
 
     -- * Arrays
   , PrimArray# (..)

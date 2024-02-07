@@ -1,5 +1,9 @@
 # Revision history for unlifted
 
+## 0.2.2.0 -- 2024-02-07
+
+* Export `Text#` in `Data.Unlifted`.
+
 ## 0.2.1.1 -- 2024-02-06
 
 * Update package metadata.
