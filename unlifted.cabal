@@ -1,6 +1,6 @@
 cabal-version:   2.4
 name:            unlifted
-version:         0.2.1.1
+version:         0.2.2.0
 synopsis:        Unlifted and levity-polymorphic types
 description:
   Unlifted and levity-polymorphic variants of several types from
@@ -17,6 +17,8 @@ category:        Data
 extra-doc-files:
   CHANGELOG.md
   README.md
+
+tested-with:     GHC ==9.4.8 || ==9.6.3 || ==9.8.1
 
 common build-settings
   default-language: Haskell2010
