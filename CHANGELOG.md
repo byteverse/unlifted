@@ -1,5 +1,9 @@
 # Revision history for unlifted
 
+## 0.2.3.0 -- 2025-04-07
+
+* Add `IO#` and `MaybeWord16#`.
+
 ## 0.2.2.0 -- 2024-02-07
 
 * Export `Text#` in `Data.Unlifted`.
