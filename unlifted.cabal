@@ -1,6 +1,6 @@
 cabal-version:   2.4
 name:            unlifted
-version:         0.2.2.0
+version:         0.2.3.0
 synopsis:        Unlifted and levity-polymorphic types
 description:
   Unlifted and levity-polymorphic variants of several types from
@@ -29,8 +29,10 @@ library
   exposed-modules:
     Data.Either.Void
     Data.Maybe.Void
+    Data.Maybe.Word16
     Data.Text.Short.Unlifted
     Data.Unlifted
+    Control.Monad.IO.Unlifted
 
   hs-source-dirs:  src
   build-depends:

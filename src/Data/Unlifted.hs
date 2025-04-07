@@ -13,6 +13,7 @@ module Data.Unlifted
     Maybe# (..)
   , Either# (..)
   , ST# (..)
+  , IO# (..)
 
     -- * Text
   , ShortText# (..)
@@ -29,6 +30,7 @@ module Data.Unlifted
   ) where
 
 import Data.Kind (Type)
+import GHC.Exts (RealWorld)
 import GHC.Exts (ByteArray#, Int32#, Levity (Unlifted), MutableByteArray#, RuntimeRep (..), State#, TYPE, Word#)
 
 {- | Variant of @ST@ where the argument type does not have to be lifted.
@@ -40,6 +42,13 @@ newtype ST# :: forall (r :: RuntimeRep). Type -> TYPE r -> Type where
     { unST# :: State# s -> (# State# s, a #)
     } ->
     ST# s a
+
+newtype IO# :: forall (r :: RuntimeRep). TYPE r -> Type where
+  IO# ::
+    forall (r :: RuntimeRep) (a :: TYPE r).
+    { unIO# :: State# RealWorld -> (# State# RealWorld, a #)
+    } ->
+    IO# a
 
 -- | Unboxed variant of @Bool@.
 newtype Bool# :: TYPE 'WordRep where
