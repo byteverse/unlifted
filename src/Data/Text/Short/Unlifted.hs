@@ -13,13 +13,14 @@ module Data.Text.Short.Unlifted
   , unlift
   , equalsSingletonChar
   , null
+  , toByteArray
   ) where
 
 import Prelude hiding (null)
 
 import Data.Text.Short (ShortText)
 import Data.Unlifted (ShortText# (ShortText#))
-import GHC.Exts ((==#),Int#,Char#)
+import GHC.Exts ((==#),Int#,Char#,ByteArray#)
 
 import qualified Data.ByteString.Short.Internal as TS
 import qualified Data.Text.Short as TS
@@ -50,3 +51,7 @@ equalsSingletonChar :: ShortText# -> Char# -> Int#
 equalsSingletonChar (ShortText# t) c = case Exts.sizeofByteArray# t of
   1# -> Exts.eqChar# (Exts.indexCharArray# t 0#) c
   _ -> 0#
+
+toByteArray :: ShortText# -> ByteArray#
+{-# inline toByteArray #-}
+toByteArray (ShortText# t) = t
