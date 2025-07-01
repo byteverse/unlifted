@@ -11,13 +11,13 @@ module Data.Text.Short.Unlifted
   , pattern Empty#
   , lift
   , unlift
+  , equalsSingletonChar
   ) where
 
-import GHC.Exts (Int#)
 import Data.ByteString.Short.Internal as TS
 import Data.Text.Short (ShortText)
 import Data.Unlifted (ShortText# (ShortText#))
-import GHC.Exts ((==#))
+import GHC.Exts ((==#),Int#,Char#)
 
 import qualified Data.Text.Short as TS
 import qualified Data.Text.Short.Unsafe as TS
@@ -41,3 +41,9 @@ lift (ShortText# x) = TS.fromShortByteStringUnsafe (SBS x)
 unlift :: ShortText -> ShortText#
 unlift t = case TS.toShortByteString t of
   SBS x -> ShortText# x
+
+-- | Is the short text a single character? Only works for ascii characters.
+equalsSingletonChar :: ShortText# -> Char# -> Int#
+equalsSingletonChar (ShortText# t) c = case Exts.sizeofByteArray# t of
+  1# -> Exts.eqChar# (Exts.indexCharArray# t 0#) c
+  _ -> 0#
