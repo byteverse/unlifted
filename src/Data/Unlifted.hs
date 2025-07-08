@@ -15,6 +15,9 @@ module Data.Unlifted
   , ST# (..)
   , IO# (..)
 
+    -- * Integral Types
+  , Word128# (..)
+
     -- * Text
   , ShortText# (..)
   , Text# (..)
@@ -30,7 +33,7 @@ module Data.Unlifted
   ) where
 
 import Data.Kind (Type)
-import GHC.Exts (RealWorld)
+import GHC.Exts (RealWorld, Word64#)
 import GHC.Exts (ByteArray#, Int32#, Levity (Unlifted), MutableByteArray#, RuntimeRep (..), State#, TYPE, Word#)
 
 {- | Variant of @ST@ where the argument type does not have to be lifted.
@@ -96,3 +99,6 @@ the in-memory format close to what Apache Arrow uses.
 -}
 newtype Text# :: TYPE ('TupleRep ['BoxedRep 'Unlifted, 'Int32Rep, 'Int32Rep]) where
   Text# :: (# ByteArray#, Int32#, Int32# #) -> Text#
+
+newtype Word128# :: TYPE ('TupleRep ['Word64Rep, 'Word64Rep]) where
+  Word128# :: (# Word64#, Word64# #) -> Word128#
