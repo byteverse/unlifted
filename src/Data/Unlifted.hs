@@ -4,6 +4,7 @@
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE StandaloneKindSignatures #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UnliftedNewtypes #-}
@@ -14,6 +15,9 @@ module Data.Unlifted
   , Either# (..)
   , ST# (..)
   , IO# (..)
+
+    -- * Lifting Unlifted Data
+  , Lifted (..)
 
     -- * Integral Types
   , Word128# (..)
@@ -102,3 +106,7 @@ newtype Text# :: TYPE ('TupleRep ['BoxedRep 'Unlifted, 'Int32Rep, 'Int32Rep]) wh
 
 newtype Word128# :: TYPE ('TupleRep ['Word64Rep, 'Word64Rep]) where
   Word128# :: (# Word64#, Word64# #) -> Word128#
+
+type Lifted :: TYPE ('BoxedRep 'Unlifted) -> Type
+data Lifted (a :: TYPE ('BoxedRep 'Unlifted)) :: Type where
+  Lifted :: forall (a :: TYPE ('BoxedRep 'Unlifted)). a -> Lifted a
