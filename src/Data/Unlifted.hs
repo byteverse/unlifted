@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE GADTSyntax #-}
 {-# LANGUAGE MagicHash #-}
@@ -15,6 +16,7 @@ module Data.Unlifted
   , Either# (..)
   , ST# (..)
   , IO# (..)
+  , Show# (..)
 
     -- * Lifting Unlifted Data
   , Lifted (..)
@@ -38,7 +40,20 @@ module Data.Unlifted
 
 import Data.Kind (Type)
 import GHC.Exts (RealWorld, Word64#)
-import GHC.Exts (ByteArray#, Int32#, Levity (Unlifted), MutableByteArray#, RuntimeRep (..), State#, TYPE, Word#)
+import GHC.Exts (ByteArray#, Int32#, Int#, Levity (Unlifted), MutableByteArray#, RuntimeRep (..), State#, TYPE, Word#)
+import GHC.Int (Int(I#))
+
+class Show# (a :: TYPE r) where
+  showsPrec# :: Int -> a -> ShowS
+  show# :: a -> String
+
+instance forall (a :: Type). Show a => Show# a where
+  showsPrec# = showsPrec
+  show# = show
+
+instance Show# Int# where
+  showsPrec# _ i s = shows (I# i) s
+  show# i = show (I# i)
 
 {- | Variant of @ST@ where the argument type does not have to be lifted.
 This does not have a monad instance and is difficult to use.
